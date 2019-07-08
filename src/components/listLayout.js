@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-
-import PostData from './postData';
 
 const PostList = styled.ul `
     flex: 0 1 25%;
@@ -18,16 +17,9 @@ const PostList = styled.ul `
     }
 `;
 
-const PostDetails = styled.div`
-    flex: 1;
-    margin: 0;
-`;
-
 class listLayout extends Component {
     state = {
-        showDetails: false,
         posts: [],
-        postData: null
     };
 
     componentDidMount(){
@@ -38,39 +30,20 @@ class listLayout extends Component {
         });
     };
 
-    loadPost = post =>{
-        console.log("the post is", post);
-
-        this.setState({
-            showDetails: true,
-            postData: post
-        });
-    };
-
     render() {
-        const { posts, showDetails, postData} = this.state
+        const { posts } = this.state
         return (
-        <>
+        
             <PostList>
-            {posts.map((post, index)=>{
-                return( 
-                <li key={index}>
-                    <a href="#" onClick={() => this.loadPost(post)}>
-                    {post.post_title}
-                    </a>
-                </li>
-                )
+                {posts.map((post, index)=>{
+                    return( 
+                    <li key={index}>
+                        <Link to={`/post/${post.id}`}>{post.post_title}</Link>
+                    </li>
+                    )
                 })
-            }
+                };
             </PostList>
-            <PostDetails>
-                {!!showDetails && !!postData ? (
-                <PostData postData={postData} />
-                ):(
-                <p>Please Select an Entry</p>
-                )}
-                </PostDetails>
-        </>
         );
     };
 };
